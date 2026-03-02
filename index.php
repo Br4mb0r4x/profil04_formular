@@ -50,6 +50,7 @@ if (isset($_POST['new_interest'])) {
 <head>
     <meta charset="UTF-8">
     <title>Požadavky</title>
+    <?php echo '<link rel="stylesheet" href="style.css">'; ?>
 </head>
 <body>
 
