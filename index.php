@@ -1,15 +1,28 @@
 <?php
 $file = 'profile.json';
+$message = '';
+$messageType = ''; // success | error | warning
 
 // vytvoření souboru pokud neexistuje
 if (!file_exists($file)) {
-    file_put_contents($file, json_encode([]));
+    if (file_put_contents($file, json_encode([])) === false) {
+        $message = "Nepodařilo se vytvořit datový soubor.";
+        $messageType = "error";
+    }
 }
 
 // načtení existujících zájmů
-$interests = json_decode(file_get_contents($file), true);
+$data = @file_get_contents($file);
 
-// pojistka – vždy musí být pole
+if ($data === false) {
+    $interests = [];
+    $message = "Soubor se nepodařilo načíst.";
+    $messageType = "error";
+} else {
+    $interests = json_decode($data, true);
+}
+
+// pojistka – vždy pole
 if (!is_array($interests)) {
     $interests = [];
 }
@@ -17,42 +30,43 @@ if (!is_array($interests)) {
 // ==========================
 // ZPRACOVÁNÍ FORMULÁŘE
 // ==========================
-$message = '';
-
 if (isset($_POST['new_interest'])) {
 
-    // očištění vstupu
     $newInterest = trim($_POST['new_interest']);
 
-    // kontrola prázdného vstupu
+    // prázdný vstup
     if ($newInterest === '') {
         $message = "Zájem nesmí být prázdný.";
+        $messageType = "warning";
     } else {
 
-        // kontrola duplicit (bez ohledu na velikost písmen)
+        // kontrola duplicit (case-insensitive)
         $lowerInterests = array_map('strtolower', $interests);
 
         if (in_array(strtolower($newInterest), $lowerInterests)) {
-            $message = "Tento zájem už existuje.";
+            $message = "Tento zájem už je v seznamu.";
+            $messageType = "warning";
         } else {
 
-            // přidání nového zájmu
+            // přidání do pole
             $interests[] = $newInterest;
 
-            // uložení do JSON
-            file_put_contents(
+            // pokus o uložení
+            $saved = @file_put_contents(
                 $file,
                 json_encode($interests, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             );
 
-            // znovu načíst data (jistota)
-            $interests = json_decode(file_get_contents($file), true);
-
-            $message = "Zájem byl přidán.";
+            if ($saved === false) {
+                $message = "Chyba při ukládání dat!";
+                $messageType = "error";
+            } else {
+                $message = "Zájem byl úspěšně přidán.";
+                $messageType = "success";
+            }
         }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
