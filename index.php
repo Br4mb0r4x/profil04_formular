@@ -9,8 +9,14 @@ if (!file_exists($file)) {
 // načtení existujících zájmů
 $interests = json_decode(file_get_contents($file), true);
 
-// ZPRACOVÁNÍ FORMULÁŘE
+// pojistka – vždy musí být pole
+if (!is_array($interests)) {
+    $interests = [];
+}
 
+// ==========================
+// ZPRACOVÁNÍ FORMULÁŘE
+// ==========================
 $message = '';
 
 if (isset($_POST['new_interest'])) {
@@ -23,7 +29,7 @@ if (isset($_POST['new_interest'])) {
         $message = "Zájem nesmí být prázdný.";
     } else {
 
-        // kontrola duplicit (case-insensitive)
+        // kontrola duplicit (bez ohledu na velikost písmen)
         $lowerInterests = array_map('strtolower', $interests);
 
         if (in_array(strtolower($newInterest), $lowerInterests)) {
@@ -39,10 +45,14 @@ if (isset($_POST['new_interest'])) {
                 json_encode($interests, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
             );
 
+            // znovu načíst data (jistota)
+            $interests = json_decode(file_get_contents($file), true);
+
             $message = "Zájem byl přidán.";
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
