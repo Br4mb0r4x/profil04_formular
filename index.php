@@ -87,7 +87,7 @@ echo '
 </form>
 ';
 
-// výpis zprávy
+
 if ($message !== '') {
     echo "<p><strong>$message</strong></p>";
 }
