@@ -1,22 +1,113 @@
-.message {
-    padding: 10px;
-    border-radius: 6px;
-    width: 300px;
-    margin-top: 10px;
+/* style.css */
+
+/* Reset základních stylů */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f7f8;
+    color: #333;
+    line-height: 1.6;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+input[type="text"] {
+    padding: 10px 15px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 250px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    outline: none;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+p {
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: fit-content;
+    max-width: 90%;
+    text-align: center;
+}
+
+p strong {
     font-weight: bold;
 }
 
-.success {
-    background-color: #d4edda;
-    color: #155724;
+/* Typy zpráv */
+p.warning {
+    background-color: #f1c40f;
+    color: #fff;
 }
 
-.error {
-    background-color: #f8d7da;
-    color: #721c24;
+p.error {
+    background-color: #e74c3c;
+    color: #fff;
 }
 
-.warning {
-    background-color: #fff3cd;
-    color: #856404;
+p.success {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+/* Seznam zájmů */
+ul {
+    list-style-type: none;
+    padding: 0;
+    width: 300px;
+}
+
+ul li {
+    background-color: #fff;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+ul li:hover {
+    transform: scale(1.02);
 }

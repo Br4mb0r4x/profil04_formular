@@ -1,9 +1,9 @@
 <?php
 $file = 'profile.json';
 $message = '';
-$messageType = ''; // success | error | warning
+$messageType = ''; 
 
-// vytvoření souboru pokud neexistuje
+
 if (!file_exists($file)) {
     if (file_put_contents($file, json_encode([])) === false) {
         $message = "Nepodařilo se vytvořit datový soubor.";
@@ -11,7 +11,7 @@ if (!file_exists($file)) {
     }
 }
 
-// načtení existujících zájmů
+
 $data = @file_get_contents($file);
 
 if ($data === false) {
@@ -22,25 +22,23 @@ if ($data === false) {
     $interests = json_decode($data, true);
 }
 
-// pojistka – vždy pole
+
 if (!is_array($interests)) {
     $interests = [];
 }
 
-// ==========================
-// ZPRACOVÁNÍ FORMULÁŘE
-// ==========================
+
 if (isset($_POST['new_interest'])) {
 
     $newInterest = trim($_POST['new_interest']);
 
-    // prázdný vstup
+
     if ($newInterest === '') {
         $message = "Zájem nesmí být prázdný.";
         $messageType = "warning";
     } else {
 
-        // kontrola duplicit (case-insensitive)
+
         $lowerInterests = array_map('strtolower', $interests);
 
         if (in_array(strtolower($newInterest), $lowerInterests)) {
@@ -48,10 +46,10 @@ if (isset($_POST['new_interest'])) {
             $messageType = "warning";
         } else {
 
-            // přidání do pole
+
             $interests[] = $newInterest;
 
-            // pokus o uložení
+
             $saved = @file_put_contents(
                 $file,
                 json_encode($interests, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
@@ -81,9 +79,7 @@ if (isset($_POST['new_interest'])) {
 <h2>Přidej zájem</h2>
 
 <?php
-// ==========================
-// FORMULÁŘ VYGENEROVANÝ PHP
-// ==========================
+
 echo '
 <form method="POST">
     <input type="text" name="new_interest" required>
